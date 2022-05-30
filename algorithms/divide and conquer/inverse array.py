@@ -3,32 +3,34 @@
 # называется инверсией массива. Количество инверсий в массиве является в некотором смысле его мерой неупорядоченности: например, в упорядоченном по неубыванию массиве
 # инверсий нет вообще, а в массиве, упорядоченном по убыванию, инверсию образуют каждые два элемента.)
 #занимаюсь дублированием кода
-def merge(a, b):
-    result = []
-    ai, bi = 0, 0
-    while ai < len(a) and bi < len(b):
-        if a[ai] < b[bi]:
-            result.append(a[ai])
-            ai += 1
-        else:
-            result.append(b[bi])
-            bi += 1
-    while ai < len(a):
-        result.append(a[ai])
-        ai += 1
-    while bi < len(b):
-        result.append(b[bi])
-        bi += 1
-    return result
 
-def merge_sort(a):
-    if len(a) < 2:
-        return a
-    else:
-        m = int(len(a) / 2)
-        left = merge_sort(a[:m])
-        right = merge_sort(a[m:])
-        return merge(left, right)
+def countInversions(array):
+    alen = len(array)
+    if alen == 1:
+        return array, 0
+    mid = int(alen / 2)
+    left, inversions1 = countInversions(array[:mid])
+    right, inversions2 = countInversions(array[mid:])
+    sorted_array = []
+    i, j = 0, 0
+    inversions = 0
+    while i < len(left) and j < len(right):
+        if left[i] > right[j]:
+            sorted_array.append(right[j])
+            inversions += mid - i
+            j += 1
+        else:
+            sorted_array.append(left[i])
+            i += 1
+    while i < len(left):
+        sorted_array.append(left[i])
+        i += 1
+    while j < len(right):
+        sorted_array.append(right[j])
+        j += 1
+    return sorted_array, inversions1 + inversions2 + inversions
+
 n = int(input())
 array = list(map(int, input().split()))
-print(inversion_array(array))
+_, inversions = countInversions(array)
+print(inversions)
