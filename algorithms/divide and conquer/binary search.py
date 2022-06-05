@@ -1,6 +1,5 @@
 from math import floor
 
-
 def read_arrays():
     a = list(map(int, input().split()))
     assert a[0] == len(a) - 1
